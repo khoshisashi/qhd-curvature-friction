@@ -1,0 +1,8 @@
+Gauge invariance of the measurement distribution
+run 2026-11-17 02:45 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+largest pointwise difference between the distributions for F and F + b
+  b = 1       6.9e-15
+  b = 1000    3.0e-12
+printed in the paper: 1.3e-14 at b = 1 and 1.2e-11 at b = 1e3
+the differences are rounding errors of the phase, so the last digits depend on the platform

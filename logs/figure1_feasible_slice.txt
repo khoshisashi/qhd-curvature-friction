@@ -1,0 +1,7 @@
+Fig. 1. Feasible slice
+run 2026-11-17 04:18 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+wrote figures/fig3_feasible.pdf
+  infeasible share of the box in this slice: 0.199
+  feasible fraction of the factor image: 1.00000
+  hull vertices of the factor polygon: 20

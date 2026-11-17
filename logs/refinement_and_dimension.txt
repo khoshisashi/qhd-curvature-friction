@@ -1,0 +1,55 @@
+Refinement, truncation and dimension checks
+run 2026-11-17 04:37 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+curvature against dimension, N_x = 4, all modes
+  d      modes       mu    kappa
+  4        256   0.0150    95.91
+  6      4,096   0.1560    13.48
+  8     65,536   0.0951    41.29
+ 10  1,048,576   0.0762    16.87
+
+spatial refinement at d = 4: Hessian spectrum
+  N_x =  4: 0.0150  0.4850  1.4381
+  N_x =  8: 0.0149  0.4938  1.4864
+  N_x = 16: 0.0150  0.4938  1.4863
+  N_x = 32: 0.0150  0.4939  1.4866
+  the two larger eigenvalues are compared with (0.494, 1.486) from N_x = 8 on;
+  at N_x = 4 they are 2 to 3% lower
+
+two resolutions at d = 6
+  N_x = 4: mu = 0.1560
+  N_x = 8: mu = 0.1557
+
+truncation to the 20000 heaviest modes at d = 6, N_x = 8
+  share of the energy kept: 99.88%
+  largest change of the rescaled landscape on the 13-point scan: 1.4e-03
+  minimiser with all modes: [0.62 0.28 0.75], truncated: [0.62 0.28 0.75]
+
+sensitivity of the curvature at d = 6, N_x = 4
+  finite-difference step 0.02: 0.15598  0.42718  2.10327
+  finite-difference step 0.005: 0.15598  0.42723  2.10307
+  finite-difference step 0.00125: 0.15598  0.42723  2.10306
+  scan with 13 points per axis: F_max = 3.192676902e-02
+  scan with 17 points per axis: F_max = 3.192676902e-02
+  scan with 25 points per axis: F_max = 3.192676902e-02
+  mu with the scan minimum 0.15598, with F_min = 0 0.15584, relative change 0.090%
+
+comparison with the values printed in the paper
+  mu at d = 4                           computed 0.01499  printed 0.015  same
+  mu at d = 6                           computed 0.15598  printed 0.156  same
+  mu at d = 8                           computed 0.09513  printed 0.095  same
+  mu at d = 10                          computed 0.07620  printed 0.076  same
+  d = 4, N_x = 4, smallest eigenvalue   computed 0.014994  printed 0.0150  same
+  d = 4, N_x = 8, smallest eigenvalue   computed 0.014940  printed 0.0150  last digit off by one
+  d = 4, N_x = 8, second eigenvalue     computed 0.49377  printed 0.494  same
+  d = 4, N_x = 8, largest eigenvalue    computed 1.48642  printed 1.486  same
+  d = 4, N_x = 16, smallest eigenvalue  computed 0.014967  printed 0.0150  same
+  d = 4, N_x = 16, second eigenvalue    computed 0.49377  printed 0.494  same
+  d = 4, N_x = 16, largest eigenvalue   computed 1.48631  printed 1.486  same
+  d = 4, N_x = 32, smallest eigenvalue  computed 0.014969  printed 0.0150  same
+  d = 4, N_x = 32, second eigenvalue    computed 0.49390  printed 0.494  same
+  d = 4, N_x = 32, largest eigenvalue   computed 1.48656  printed 1.486  last digit off by one
+  mu at d = 6, N_x = 4                  computed 0.155981  printed 0.1560  same
+  mu at d = 6, N_x = 8                  computed 0.155744  printed 0.1557  same
+  energy kept, per cent                 computed 99.8775  printed 99.88  same
+  15 of 17 round to the printed value, 2 differ by one in the last digit, 0 differ by more

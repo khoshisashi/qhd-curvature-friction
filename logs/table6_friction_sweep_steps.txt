@@ -1,0 +1,45 @@
+Sec. V-E. Sensitivity to the number of integration steps
+run 2026-11-17 04:37 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+floor of 10^4 steps against the floor of 3 x 10^3, at every friction where the two differ
+seed 11
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV   change
+ 0.0625   146.59       1390   10000  0.0147      0.9589      0.9970  0.00197  0.945  1.3e-04
+  0.125    80.31       2779   10000  0.0080      0.9592      0.9966  0.00176  0.948  2.0e-04
+   0.25    43.67       5556   10000  0.0044      0.9562      0.9965  0.00186  0.951  1.9e-05
+      1    12.67      22222   10000  0.0013      0.8322      0.9876  0.00614  0.909  1.4e-06
+      4     3.61      88886   10000  0.0004      0.1514      0.7471  0.03875  0.654  6.2e-07
+seed 12
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV   change
+   0.25    79.82       5556   10000  0.0080      0.9762      0.9991  0.00113  0.943  2.6e-05
+      1    23.16      22222   10000  0.0023      0.9450      0.9967  0.00257  0.927  7.2e-06
+seed 13
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV   change
+ 0.0625   116.21       1390   10000  0.0116      0.9722      0.9985  0.00158  0.952  1.6e-05
+   0.25    34.61       5556   10000  0.0035      0.9672      0.9982  0.00145  0.953  1.5e-05
+      1    10.04      22222   10000  0.0010      0.8185      0.9829  0.00701  0.908  5.8e-07
+seed 14
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV   change
+ 0.0625   140.82       1390   10000  0.0141      0.9316      0.9886  0.00335  0.949  3.0e-04
+   0.25    41.95       5556   10000  0.0042      0.9300      0.9885  0.00330  0.956  1.7e-05
+      1    12.17      22222   10000  0.0012      0.8532      0.9695  0.00755  0.924  2.9e-06
+seed 15
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV   change
+   0.25    62.23       5556   10000  0.0062      0.9726      0.9971  0.00139  0.955  2.8e-05
+      1    18.06      22222   10000  0.0018      0.9418      0.9903  0.00333  0.929  3.7e-06
+largest change of the three statistics: seed 11 1.99e-04, seed 12 2.64e-05, seed 13 1.65e-05, seed 14 3.02e-04, seed 15 2.84e-05
+over the five landscapes: 3.02e-04
+
+step refined from 0.02 to 0.02 / 3 on the plateau, seed-11 landscape
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV  change P     E[F]
+  0.032   259.85        712   38979  0.0067      0.9609      0.9978  0.00232  0.943   1.2e-04  7.0e-06
+ 0.0625   146.59       1390   21989  0.0067      0.9590      0.9970  0.00197  0.945   2.1e-04  8.1e-06
+  0.125    80.31       2779   12047  0.0067      0.9592      0.9966  0.00176  0.948   1.9e-04  2.4e-06
+   0.25    43.67       5556    6550  0.0067      0.9562      0.9965  0.00186  0.951   2.0e-05  2.1e-07
+largest change of P: 2.12e-04, of E[F]: 8.09e-06
+
+comparison with the values printed in the paper
+  3e3 against 1e4 steps, largest change, in 1e-4  computed 3.023  printed 3.0  same
+  refined step, largest change of P, in 1e-4      computed 2.117  printed 2.1  same
+  refined step, largest change of E[F], in 1e-6   computed 8.092  printed 8.1  same
+  3 of 3 round to the printed value, 0 differ by one in the last digit, 0 differ by more

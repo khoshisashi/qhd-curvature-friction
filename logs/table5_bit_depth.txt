@@ -1,0 +1,20 @@
+Table V. QHD against design bit depth, seed-11 landscape
+run 2026-11-17 02:29 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+mu = 0.1560, nu = 0.7899, S = 12.671
+ m   points  P(F<=0.05)  |mode-xi*|  spacing  volume of F<=0.05  max change at 1e4 steps
+ 4     4096      0.9624      0.0555   0.0667              0.213                  2.9e-07
+ 5    32768      0.9876      0.0149   0.0323              0.223                  1.7e-07
+ 6   262144      0.9936      0.0207   0.0159              0.229                  2.1e-06
+
+comparison with the values printed in the paper
+  m = 4 P(F <= 0.05)  computed 0.962438  printed 0.9624  same
+  m = 4 distance      computed 0.055478  printed 0.0555  same
+  m = 4 spacing       computed 0.066667  printed 0.0667  same
+  m = 5 P(F <= 0.05)  computed 0.987588  printed 0.9876  same
+  m = 5 distance      computed 0.014898  printed 0.0149  same
+  m = 5 spacing       computed 0.032258  printed 0.0323  same
+  m = 6 P(F <= 0.05)  computed 0.993557  printed 0.9936  same
+  m = 6 distance      computed 0.020670  printed 0.0207  same
+  m = 6 spacing       computed 0.015873  printed 0.0159  same
+  9 of 9 round to the printed value, 0 differ by one in the last digit, 0 differ by more

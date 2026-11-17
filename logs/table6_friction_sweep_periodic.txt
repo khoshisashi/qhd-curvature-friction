@@ -1,0 +1,13 @@
+Sec. VI. Operator dependence, seed-11 landscape
+run 2026-11-17 02:44 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+periodic spectral Laplacian
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV
+  0.125    80.31       2779    4016  0.0200      0.9923      0.9960  0.00070  0.990
+   0.25    43.67       5556    3000  0.0146      0.9974      0.9983  0.00027  0.996
+    0.5    23.59      11112    3000  0.0079      0.9997      0.9998  0.00010  0.998
+      1    12.67      22222    3000  0.0042      0.9893      1.0000  0.00096  0.991
+      2     6.77      44443    3000  0.0023      0.6106      0.9860  0.01093  0.931
+interval Laplacian at the friction where the periodic one peaks
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV
+    0.5    23.59      11112    3000  0.0079      0.9455      0.9942  0.00236  0.944

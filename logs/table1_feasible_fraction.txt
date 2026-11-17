@@ -1,0 +1,19 @@
+Table I. Feasible fraction of the entry parameterisation
+run 2026-11-17 02:44 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+  d    M   feasible     hits  std. error
+  2    3    0.89613   179226     6.8e-04
+  3    6    0.63527   127054     1.1e-03
+  4   10    0.33504    67009     1.1e-03
+  5   15    0.12662    25324     7.4e-04
+  6   21    0.03288     6576     4.0e-04
+  8   36    0.00076      151     6.1e-05
+
+comparison with the values printed in the paper
+  d = 2  computed 0.89613  printed 0.896  same
+  d = 3  computed 0.63527  printed 0.635  same
+  d = 4  computed 0.33504  printed 0.335  same
+  d = 5  computed 0.12662  printed 0.127  same
+  d = 6  computed 0.03288  printed 0.033  same
+  d = 8  computed 0.000755  printed 0.0008  same
+  6 of 6 round to the printed value, 0 differ by one in the last digit, 0 differ by more

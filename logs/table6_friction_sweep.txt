@@ -1,0 +1,36 @@
+Table VI. Friction sweep at fixed exposure, seed-11 landscape
+run 2026-11-17 04:40 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+mu = 0.1560, 2 sqrt(mu) = 0.7899, exposure E = 4.2367e+05 with alpha_obj = 2.51
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV
+  0.004  1423.78         90   71190  0.0200      0.5524      0.9468  0.01516  0.793
+  0.016   464.97        357   23249  0.0200      0.9248      0.9982  0.00378  0.928
+  0.032   259.85        712   12993  0.0200      0.9608      0.9977  0.00233  0.943
+  0.125    80.31       2779    4016  0.0200      0.9590      0.9966  0.00176  0.948
+   0.25    43.67       5556    3000  0.0146      0.9562      0.9965  0.00186  0.951
+      1    12.67      22222    3000  0.0042      0.8322      0.9876  0.00614  0.909
+      4     3.61      88886    3000  0.0012      0.1514      0.7471  0.03875  0.654
+
+comparison with the values printed in the paper
+  rho = 0.004 p01   computed 0.55244  printed 0.552  same
+  rho = 0.004 p05   computed 0.94681  printed 0.947  same
+  rho = 0.004 mean  computed 0.015163  printed 0.0152  same
+  rho = 0.016 p01   computed 0.92479  printed 0.925  same
+  rho = 0.016 p05   computed 0.99820  printed 0.998  same
+  rho = 0.016 mean  computed 0.003778  printed 0.0038  same
+  rho = 0.032 p01   computed 0.96077  printed 0.961  same
+  rho = 0.032 p05   computed 0.99772  printed 0.998  same
+  rho = 0.032 mean  computed 0.002328  printed 0.0023  same
+  rho = 0.125 p01   computed 0.95901  printed 0.959  same
+  rho = 0.125 p05   computed 0.99659  printed 0.997  same
+  rho = 0.125 mean  computed 0.001760  printed 0.0018  same
+  rho = 0.25 p01    computed 0.95621  printed 0.956  same
+  rho = 0.25 p05    computed 0.99650  printed 0.996  same
+  rho = 0.25 mean   computed 0.001862  printed 0.0019  same
+  rho = 1 p01       computed 0.83217  printed 0.832  same
+  rho = 1 p05       computed 0.98759  printed 0.988  same
+  rho = 1 mean      computed 0.006135  printed 0.0061  same
+  rho = 4 p01       computed 0.15143  printed 0.151  same
+  rho = 4 p05       computed 0.74710  printed 0.747  same
+  rho = 4 mean      computed 0.038747  printed 0.0387  same
+  21 of 21 round to the printed value, 0 differ by one in the last digit, 0 differ by more

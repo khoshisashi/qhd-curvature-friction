@@ -1,0 +1,6 @@
+# The logs under logs/ were produced with numpy 2.5.5, scipy 1.18.1 and matplotlib 3.11.2 on
+# Python 3.13. The lower bounds below were checked on Python 3.11 with the scripts that run in
+# under a minute, and gave the same values.
+numpy>=1.24
+scipy>=1.10
+matplotlib>=3.7

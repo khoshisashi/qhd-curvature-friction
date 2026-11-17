@@ -1,0 +1,6 @@
+Sec. V-E. Further frictions on the seed-11 landscape
+run 2026-11-17 02:41 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+    rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV
+  0.002  2415.81         45  120791  0.0200      0.3214      0.8182  0.03024  0.667
+ 0.0625   146.59       1390    7330  0.0200      0.9588      0.9970  0.00198  0.945
