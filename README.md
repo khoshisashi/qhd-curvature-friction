@@ -53,6 +53,7 @@ The figure scripts write to `figures/`, which is created on the first run and no
 | Table I, feasible fraction of the entry parameterisation | `table1_feasible_fraction` | `table1_feasible_fraction.txt` | 2 s |
 | Sec. V-A, infeasible points of the `d = 2` entry register | `entry_register_d2` | `entry_register_d2.txt` | 1 s |
 | Table II and the paired comparisons of Secs. V-B and V-C, thirty targets outside the family | `table2_representation_gap` | `table2_representation_gap.txt` | 8 min |
+| Sec. V-B, Frobenius error on the same targets, with fitted directions and for a fixed random frame | `frobenius_error` | `frobenius_error.txt` | 1 s |
 | Tables III and IV, thirty factor structures, as drawn and orthogonalised | `table3_table4_conditioning` | `table3_table4_conditioning.txt` | 20 s |
 | Table V, design bit depth | `table5_bit_depth` | `table5_bit_depth.txt` | 10 min |
 | Table VI, friction sweep on the seed-11 landscape | `table6_friction_sweep` | `table6_friction_sweep.txt` | 8 min |
@@ -74,10 +75,7 @@ Fig. 4 those of the sections `table`, `dense` and `draws` of the sweep; all four
 
 ## Not in this repository
 
-| Paper | Missing |
-|---|---|
-| Sec. V-B, the two Frobenius errors, `9.2e-2` with fitted directions and `0.93` for a fixed frame | script and run log |
-| Fig. 2 | a schematic, without data |
+Fig. 2 is a schematic without data and has no script.
 
 ## Original result files
 
@@ -115,6 +113,12 @@ files have no stored counterpart and are not compared.
   variable diagonal is scanned at its corners and at 3000 random points, the minimum is refined by
   bounded quasi-Newton descent (L-BFGS-B) from the two best of them, and the range runs from the
   largest value of the scan to that minimum.
+- **Frobenius error.** The error of Sec. V-B is the Frobenius distance of a family member from the
+  target, relative to the Frobenius norm of the target, on the thirty targets and the frames of
+  Table II. The diagonal of the family stays as drawn. For a fixed random frame the coefficients
+  are fitted by bounded least squares on `[0, 1]^M`. With fitted directions the loadings are free as
+  well, which leaves the best positive semidefinite approximation of rank `M` to the target minus
+  the diagonal, from its `M` largest eigenvalues where they are positive.
 - **Curvature.** The objective range is the difference between the largest and the smallest value
   of a 13-point-per-axis scan of the box. With the smallest value replaced by zero, its exact value
   for an in-family target, the curvature changes by under 0.1%.
@@ -144,6 +148,8 @@ experiments `table1_feasible_fraction`, `entry_register_d2` and `table2_represen
 three figure scripts carry over the numerics of the working scripts and notebooks of the project.
 `core/qhd.py` and the experiments built on it were rewritten for the release from the protocol
 stated in the paper, and the frictions and step counts of the sweep follow the working notebooks.
+The experiment `frobenius_error` was written for the release and is the source of the two errors
+printed in Sec. V-B.
 The first three rows of Table II and the two largest sweeps of the paper were first run on a GPU;
 the versions here run on a CPU, the logs show that they reproduce the printed entries of Tables II,
 V and VI, and the stored rows are compared with the result files of the original runs as described

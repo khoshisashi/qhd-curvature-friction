@@ -1,0 +1,13 @@
+Sec. V-B. Frobenius error of the factor family on the thirty targets of Table II
+run 2026-11-18 10:43 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+relative Frobenius error         min  median     max
+M=3, fitted directions         0.068   0.120   0.356
+M=3, fixed random frame        0.496   0.794   0.886
+M=5, fitted directions         0.000   0.013   0.057
+M=5, fixed random frame        0.485   0.697   0.876
+
+comparison with the values printed in the paper
+  Sec. V-B: median error at M=3, fitted directions   computed 0.1199  printed 0.12  same
+  Sec. V-B: median error at M=3, fixed random frame  computed 0.7941  printed 0.79  same
+  2 of 2 round to the printed value, 0 differ by one in the last digit, 0 differ by more

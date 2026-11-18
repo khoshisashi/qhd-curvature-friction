@@ -80,6 +80,15 @@ def make_objective(S_target, chunk=4000):
     return F
 
 
+def targets(n):
+    """Covariance targets outside the factor family with their diagonals, from one stream."""
+    rng = np.random.default_rng(2)
+    for _ in range(n):
+        B = rng.normal(size=(D, D)) / np.sqrt(D) * 0.35
+        diagonal = rng.uniform(*DIAG, D)
+        yield B @ B.T + np.diag(diagonal), diagonal
+
+
 def frame(n_factors, seed, orthogonal=False):
     """Diagonal and loadings of a factor family, the diagonal drawn first."""
     rng = np.random.default_rng(seed)
@@ -178,13 +187,9 @@ def measure(n_targets):
     raw = {name: [] for name in names}
     span = {name: [] for name in names}
     cone = []
-    rng = np.random.default_rng(2)
     print(f"{'target':>6} " + " ".join(f"{name:>10}" for name in FAMILIES) + f" {'cone':>10} {'s':>6}")
-    for t in range(n_targets):
+    for t, (S_target, diag_target) in enumerate(targets(n_targets)):
         t0 = time.time()
-        B = rng.normal(size=(D, D)) / np.sqrt(D) * 0.35
-        diag_target = rng.uniform(*DIAG, D)
-        S_target = B @ B.T + np.diag(diag_target)
         F = make_objective(S_target)
         cone.append(min_over_cone(F, S_target, seed=t))
         V3, delta3 = frame(3, 11 + t)

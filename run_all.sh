@@ -15,6 +15,7 @@ run() {
 run table1_feasible_fraction        experiments.table1_feasible_fraction
 run entry_register_d2               experiments.entry_register_d2
 run table2_representation_gap       experiments.table2_representation_gap
+run frobenius_error                 experiments.frobenius_error
 run table3_table4_conditioning      experiments.table3_table4_conditioning
 run refinement_and_dimension        experiments.refinement_and_dimension
 run figure1_feasible_slice          experiments.figure1_feasible_slice
