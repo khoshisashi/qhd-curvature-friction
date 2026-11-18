@@ -1,5 +1,5 @@
 Sec. V-E. Sensitivity to the number of integration steps
-run 2026-11-18 05:50 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+run 2026-11-18 07:23 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
 
 3 x 10^3 against 10^4 steps: five landscapes, seven frictions, three statistics
 seed 11: mu = 0.1560
@@ -50,13 +50,14 @@ seed 15: mu = 0.0768
 largest change of the three statistics: seed 11 1.87e-05, seed 12 1.92e-04, seed 13 1.47e-05, seed 14 1.74e-05, seed 15 4.86e-05
 over the five landscapes: 1.92e-04
 
-step refined from 0.02 to 0.02 / 3 on the plateau, seed-11 landscape
+step refined from 0.02 to 0.02 / 3 around the peak and on the plateau, seed-11 landscape
     rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV  change P     E[F]
+  0.016   464.97        357   69747  0.0067      0.9248      0.9982  0.00378  0.928   1.6e-05  1.1e-06
   0.032   259.85        712   38979  0.0067      0.9609      0.9978  0.00232  0.943   1.2e-04  7.0e-06
  0.0625   146.59       1390   21989  0.0067      0.9590      0.9970  0.00197  0.945   2.1e-04  8.1e-06
   0.125    80.31       2779   12047  0.0067      0.9592      0.9966  0.00176  0.948   1.9e-04  2.4e-06
    0.25    43.67       5556    6550  0.0067      0.9562      0.9965  0.00186  0.951   2.0e-05  2.1e-07
-largest change of P: 2.12e-04, of E[F]: 8.09e-06
+largest change of P: 2.12e-04, of E[F]: 8.09e-06; the refined runs peak at rho = 0.032
 
 comparison with the values printed in the paper
   3e3 against 1e4 steps, largest change, in 1e-4  computed 1.918  printed 1.9  same

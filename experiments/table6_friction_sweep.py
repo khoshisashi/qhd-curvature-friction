@@ -29,6 +29,7 @@ DENSE = (0.002, 0.008, 0.0625, 0.5)
 UPPER = (0.25, 0.5, 0.75, 1, 1.5, 2, 4)     # frictions of the runs with a fixed number of steps
 RESULTS = pathlib.Path(__file__).resolve().parents[1] / "results"
 REFINED = 0.02 / 3     # integration step of the refinement check
+REFINE = (0.016, 0.032, 0.0625, 0.125, 0.25)     # its frictions: the peak, its neighbours, the plateau
 COLUMNS = (f"{'rho':>7} {'S':>8} {'lambda(S)':>10} {'steps':>7} {'ds':>7} {'P(F<=0.01)':>11} "
            f"{'P(F<=0.05)':>11} {'E[F]':>8} {'TV':>6}")
 
@@ -130,22 +131,25 @@ def steps():
             print(f"{line(b)} {change:>8.1e}", flush=True)
             worst[seed] = max(worst.get(seed, 0.0), change)
         stored[seed] = dict(mu=mu, rows_3000=[a for a, _ in pairs], rows_10000=[b for _, b in pairs])
-    store("steps", dict(draws=stored))
     print("largest change of the three statistics: "
           + ", ".join(f"seed {seed} {change:.2e}" for seed, change in worst.items()))
     print(f"over the five landscapes: {max(worst.values()):.2e}")
     print()
-    print("step refined from 0.02 to 0.02 / 3 on the plateau, seed-11 landscape")
+    print("step refined from 0.02 to 0.02 / 3 around the peak and on the plateau, seed-11 landscape")
     print(COLUMNS + f" {'change P':>9} {'E[F]':>8}")
     worst_p = worst_e = 0.0
-    for rho in (0.032, 0.0625, 0.125, 0.25):
+    refinement = []
+    for rho in REFINE:
         a = run(*seed_11, rho)
         b = run(*seed_11, rho, ds_max=REFINED)
+        refinement.append(dict(rho=rho, base=a, refined=b))
         dp = max(abs(a["p01"] - b["p01"]), abs(a["p05"] - b["p05"]))
         de = abs(a["mean"] - b["mean"])
         print(f"{line(b)} {dp:>9.1e} {de:>8.1e}", flush=True)
         worst_p, worst_e = max(worst_p, dp), max(worst_e, de)
-    print(f"largest change of P: {worst_p:.2e}, of E[F]: {worst_e:.2e}")
+    print(f"largest change of P: {worst_p:.2e}, of E[F]: {worst_e:.2e}; the refined runs peak at "
+          f"rho = {max(refinement, key=lambda r: r['refined']['p01'])['rho']:g}")
+    store("steps", dict(draws=stored, refinement=refinement))
     pub = Published()
     pub.add("3e3 against 1e4 steps, largest change, in 1e-4", max(worst.values()) * 1e4, 1.9, 1)
     pub.add("refined step, largest change of P, in 1e-4", worst_p * 1e4, 2.1, 1)

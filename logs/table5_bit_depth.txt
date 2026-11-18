@@ -1,5 +1,5 @@
 Table V. QHD against design bit depth, seed-11 landscape
-run 2026-11-17 02:29 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+run 2026-11-18 07:04 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
 
 mu = 0.1560, nu = 0.7899, S = 12.671
  m   points  P(F<=0.05)  |mode-xi*|  spacing  volume of F<=0.05  max change at 1e4 steps
