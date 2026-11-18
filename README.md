@@ -16,7 +16,7 @@ and no circuit simulation are involved.
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 python -m experiments.table1_feasible_fraction     # a few seconds
-bash run_all.sh                                    # everything, about an hour and three quarters on one core
+bash run_all.sh                                    # everything, about two hours on one core
 ```
 
 The experiments are run as modules from the root of the repository. Those for the tables and for the
@@ -24,8 +24,8 @@ statements in the text print each computed value next to the value printed in th
 with a non-zero status if one of them differs by more than one unit in the last printed digit. The
 sections `dense`, `draws` and `periodic` of the sweep print the quantities behind statements of
 Secs. V-E and VI without such a comparison. The output of every experiment is stored under `logs/`.
-The experiment of Table II and the sections `table`, `dense` and `draws` of the sweep also store
-their rows under `results/`, from which Figs. 3 and 4 are drawn.
+The experiment of Table II and the sections of the sweep also store their rows under `results/`.
+Figs. 3 and 4 are drawn from the rows of Table II and of the sections `table`, `dense` and `draws`.
 
 ## Layout
 
@@ -37,7 +37,7 @@ core/            shared modules
   figures.py       style shared by the figure scripts
 experiments/     one script per table, figure or group of statements
 logs/            stored output of every experiment
-results/         rows from which Figs. 3 and 4 are drawn
+results/         stored rows of Table II and of the friction sweep
 run_all.sh       runs every experiment and rewrites logs/ and results/
 ```
 
@@ -55,9 +55,9 @@ The figure scripts write to `figures/`, which is created on the first run and no
 | Table VI, friction sweep on the seed-11 landscape | `table6_friction_sweep` | `table6_friction_sweep.txt` | 8 min |
 | Sec. V-E and Fig. 4, the frictions 0.002, 0.008, 0.0625 and 0.5 | `table6_friction_sweep dense` | `table6_friction_sweep_dense.txt` | 12 min |
 | Sec. V-E, four further draws | `table6_friction_sweep draws` | `table6_friction_sweep_draws.txt` | 40 min |
-| Sec. V-E, sensitivity to the integration step, all five draws | `table6_friction_sweep steps` | `table6_friction_sweep_steps.txt` | 20 min |
+| Sec. V-E, 3000 against 10000 integration steps on all five draws, and the refined step | `table6_friction_sweep steps` | `table6_friction_sweep_steps.txt` | 30 min |
 | Sec. V-E, gauge invariance (Proposition 2) | `gauge_invariance` | `gauge_invariance.txt` | 1 min |
-| Sec. VI, periodic Laplacian | `table6_friction_sweep periodic` | `table6_friction_sweep_periodic.txt` | 1 min |
+| Sec. VI, periodic Laplacian on three draws | `table6_friction_sweep periodic` | `table6_friction_sweep_periodic.txt` | 10 min |
 | Secs. IV and VI, refinement, truncation and dimension | `refinement_and_dimension` | `refinement_and_dimension.txt` | 4 min |
 | Fig. 1, feasible slice | `figure1_feasible_slice` | `figure1_feasible_slice.txt` | 2 s |
 | Fig. 3, raw residual on the thirty targets | `figure3_representation_gap` | `figure3_representation_gap.txt` | 1 s |
@@ -104,7 +104,9 @@ Fig. 4 those of the sections `table`, `dense` and `draws` of the sweep; all four
 - **Integration.** Strang splitting with kinetic half steps around the potential step and `lambda`
   taken at the step midpoint. The kinetic factor is exact, through the type-I discrete sine
   transform that diagonalises the interval Laplacian. The step is 0.02 or below, with a floor of
-  3000 steps, and the refinement check of Sec. V-E divides the largest step by three.
+  3000 steps, and the refinement check of Sec. V-E divides the largest step by three. The
+  comparison of step counts of Sec. V-E and the runs with the periodic Laplacian of Sec. VI fix the
+  number of steps instead, at 3000 and 10000, on the frictions 0.25, 0.5, 0.75, 1, 1.5, 2 and 4.
 - **`d = 2` illustration.** `experiments/entry_register_d2.py` keeps the set-up of the working
   script it comes from, a grid of width 4 with 32 points per direction, a tent-shaped claim and an
   objective restricted to a central window, which differs from the benchmark of Sec. IV.
@@ -115,10 +117,11 @@ The repository was reorganised for the public release in November 2026. `core/la
 experiments `table1_feasible_fraction`, `entry_register_d2` and `table2_representation_gap` and the
 three figure scripts carry over the numerics of the working scripts and notebooks of the project.
 `core/qhd.py` and the experiments built on it were rewritten for the release from the protocol
-stated in the paper. The first three rows of Table II and the two largest sweeps of the paper were
-first run on a GPU; the versions here run on a CPU, and the logs show that they reproduce the
-printed entries of Tables II, V and VI. The reorganisation and the rewriting were done with the
-assistance of generative AI (Claude, Anthropic).
+stated in the paper, and the frictions and step counts of the sweep follow the working notebooks.
+The first three rows of Table II and the two largest sweeps of the paper were first run on a GPU;
+the versions here run on a CPU, and the logs show that they reproduce the printed entries of Tables
+II, V and VI. The reorganisation and the rewriting were done with the assistance of generative AI
+(Claude, Anthropic).
 
 ## Licence and citation
 

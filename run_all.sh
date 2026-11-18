@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Runs every experiment and stores its output under logs/. About an hour and three quarters on one core,
-# most of it in the sections steps and draws of the friction sweep.
+# Runs every experiment and stores its output under logs/. About two hours on one core, most of it in the
+# sections steps and draws of the friction sweep.
 set -euo pipefail
 cd "$(dirname "$0")"
 mkdir -p logs

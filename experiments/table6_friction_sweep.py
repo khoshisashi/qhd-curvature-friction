@@ -4,10 +4,10 @@
   python -m experiments.table6_friction_sweep dense      four further frictions on the seed-11 landscape
   python -m experiments.table6_friction_sweep draws      four further draws (seeds 12 to 15), coarser grid
   python -m experiments.table6_friction_sweep steps      sensitivity to the integration step, all five draws
-  python -m experiments.table6_friction_sweep periodic   the periodic spectral Laplacian
+  python -m experiments.table6_friction_sweep periodic   the periodic spectral Laplacian, three draws
 
-All runs use m = 5 bits per variable. rho is the friction in units of critical damping. The first
-three sections also store their rows under results/, where the script of Fig. 4 reads them.
+All runs use m = 5 bits per variable. rho is the friction in units of critical damping. The sections
+also store their rows under results/, where the script of Fig. 4 reads those of the first three.
 """
 import json
 import pathlib
@@ -26,6 +26,7 @@ PRINTED = {  # rho: P(F <= 0.01), P(F <= 0.05), E[F]
 }
 COARSE = (0.004, 0.016, 0.0625, 0.25, 1)
 DENSE = (0.002, 0.008, 0.0625, 0.5)
+UPPER = (0.25, 0.5, 0.75, 1, 1.5, 2, 4)     # frictions of the runs with a fixed number of steps
 RESULTS = pathlib.Path(__file__).resolve().parents[1] / "results"
 REFINED = 0.02 / 3     # integration step of the refinement check
 COLUMNS = (f"{'rho':>7} {'S':>8} {'lambda(S)':>10} {'steps':>7} {'ds':>7} {'P(F<=0.01)':>11} "
@@ -39,9 +40,9 @@ def landscape(seed):
     return mu, rescale(f_grid), grid
 
 
-def run(mu, f_tilde, grid, rho, floor=3000, ds_max=0.02, periodic=False):
+def run(mu, f_tilde, grid, rho, floor=3000, ds_max=0.02, steps=None, periodic=False):
     nu, lam_end, horizon = schedule(rho, mu)
-    steps = n_steps(horizon, floor, ds_max)
+    steps = steps or n_steps(horizon, floor, ds_max)
     out = summary(evolve(f_tilde, nu, horizon, steps, periodic=periodic), f_tilde, grid, XI_STAR)
     out.update(rho=rho, horizon=horizon, lam_end=lam_end, steps=steps, ds=horizon / steps)
     return out
@@ -112,23 +113,24 @@ def draws():
 
 def steps():
     header("Sec. V-E. Sensitivity to the number of integration steps")
-    print("floor of 10^4 steps against the floor of 3 x 10^3, at every friction where the two differ")
-    worst = {}
-    for seed, frictions in ((11, sorted(set(PRINTED) | {0.0625})), (12, COARSE), (13, COARSE),
-                            (14, COARSE), (15, COARSE)):
+    print("3 x 10^3 against 10^4 steps: five landscapes, seven frictions, three statistics")
+    worst, stored = {}, {}
+    for seed in (11, 12, 13, 14, 15):
         mu, f_tilde, grid = landscape(seed)
         if seed == 11:
             seed_11 = mu, f_tilde, grid
-        print(f"seed {seed}")
+        print(f"seed {seed}: mu = {mu:.4f}")
         print(COLUMNS + f" {'change':>8}")
-        for rho in frictions:
-            if n_steps(schedule(rho, mu)[2]) >= 10000:
-                continue
-            a = run(mu, f_tilde, grid, rho)
-            b = run(mu, f_tilde, grid, rho, floor=10000)
+        pairs = []
+        for rho in UPPER:
+            a = run(mu, f_tilde, grid, rho, steps=3000)
+            b = run(mu, f_tilde, grid, rho, steps=10000)
+            pairs.append((a, b))
             change = max(abs(a[k] - b[k]) for k in ("p01", "p05", "mean"))
             print(f"{line(b)} {change:>8.1e}", flush=True)
             worst[seed] = max(worst.get(seed, 0.0), change)
+        stored[seed] = dict(mu=mu, rows_3000=[a for a, _ in pairs], rows_10000=[b for _, b in pairs])
+    store("steps", dict(draws=stored))
     print("largest change of the three statistics: "
           + ", ".join(f"seed {seed} {change:.2e}" for seed, change in worst.items()))
     print(f"over the five landscapes: {max(worst.values()):.2e}")
@@ -145,22 +147,31 @@ def steps():
         worst_p, worst_e = max(worst_p, dp), max(worst_e, de)
     print(f"largest change of P: {worst_p:.2e}, of E[F]: {worst_e:.2e}")
     pub = Published()
-    pub.add("3e3 against 1e4 steps, largest change, in 1e-4", max(worst.values()) * 1e4, 3.0, 1)
+    pub.add("3e3 against 1e4 steps, largest change, in 1e-4", max(worst.values()) * 1e4, 1.9, 1)
     pub.add("refined step, largest change of P, in 1e-4", worst_p * 1e4, 2.1, 1)
     pub.add("refined step, largest change of E[F], in 1e-6", worst_e * 1e6, 8.1, 1)
     return pub.report()
 
 
 def periodic():
-    header("Sec. VI. Operator dependence, seed-11 landscape")
-    mu, f_tilde, grid = landscape(11)
-    print("periodic spectral Laplacian")
-    print(COLUMNS)
-    for rho in (0.125, 0.25, 0.5, 1, 2):
-        print(line(run(mu, f_tilde, grid, rho, periodic=True)), flush=True)
-    print("interval Laplacian at the friction where the periodic one peaks")
-    print(COLUMNS)
-    print(line(run(mu, f_tilde, grid, 0.5)))
+    header("Sec. VI. Operator dependence, three landscapes")
+    print("periodic spectral Laplacian at 10^4 steps, and the interval Laplacian where it peaks")
+    stored = {}
+    for seed in (11, 12, 13):
+        mu, f_tilde, grid = landscape(seed)
+        print(f"seed {seed}: mu = {mu:.4f}")
+        print(COLUMNS)
+        rows = []
+        for rho in UPPER:
+            rows.append(run(mu, f_tilde, grid, rho, steps=10000, periodic=True))
+            print(line(rows[-1]), flush=True)
+        best = max(rows, key=lambda r: r["p01"])
+        interval = run(mu, f_tilde, grid, best["rho"], steps=10000)
+        stored[seed] = dict(mu=mu, rows=rows, interval_at_peak=interval)
+        print(f"  P(F<=0.01) peaks at rho = {best['rho']:g} with {best['p01']:.5f}; "
+              f"the interval Laplacian gives {interval['p01']:.4f} there")
+        print()
+    store("periodic", dict(draws=stored))
     return 0
 
 
