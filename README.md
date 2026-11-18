@@ -16,7 +16,7 @@ and no circuit simulation are involved.
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 python -m experiments.table1_feasible_fraction     # a few seconds
-bash run_all.sh                                    # everything, about two hours and a quarter on one core
+bash run_all.sh                                    # everything, about an hour and three quarters on one core
 ```
 
 The experiments are run as modules from the root of the repository. Those for the tables and for the
@@ -49,7 +49,7 @@ The figure scripts write to `figures/`, which is created on the first run and no
 |---|---|---|---|
 | Table I, feasible fraction of the entry parameterisation | `table1_feasible_fraction` | `table1_feasible_fraction.txt` | 2 s |
 | Sec. V-A, infeasible points of the `d = 2` entry register | `entry_register_d2` | `entry_register_d2.txt` | 1 s |
-| Table II and the paired comparisons of Secs. V-B and V-C, thirty targets outside the family | `table2_representation_gap` | `table2_representation_gap.txt` | 35 min |
+| Table II and the paired comparisons of Secs. V-B and V-C, thirty targets outside the family | `table2_representation_gap` | `table2_representation_gap.txt` | 8 min |
 | Tables III and IV, thirty factor structures, as drawn and orthogonalised | `table3_table4_conditioning` | `table3_table4_conditioning.txt` | 20 s |
 | Table V, design bit depth | `table5_bit_depth` | `table5_bit_depth.txt` | 10 min |
 | Table VI, friction sweep on the seed-11 landscape | `table6_friction_sweep` | `table6_friction_sweep.txt` | 8 min |
@@ -84,11 +84,11 @@ Fig. 4 those of the sections `table`, `dense` and `draws` of the sweep; all four
 - **Representation gap.** The thirty targets come from one stream, seed 2, the matrix `B` of a
   target before its diagonal. Target `t = 1, ..., 30` is paired with the factor structure of seed
   `10 + t`, so the three-factor frames are those of Tables III and IV; the scan of a box uses seed
-  `99 + t` and the start of the cone minimisation seed `t - 1`. A box is scanned at its corners and
-  at 4000 random points, and the minimum is refined by Nelder-Mead from the three best of them. The
-  range of a fixed-diagonal family is that of the scan. The box of the variable diagonal has nine
-  variables and a minimiser on its boundary: there the minimum is refined from the twelve best
-  points by bounded quasi-Newton descent followed by Nelder-Mead, and the range runs from the
+  `99 + t` and the start of the cone minimisation seed `t - 1`. The box of a fixed-diagonal family
+  is scanned at its corners and at 4000 random points, the minimum is refined by Nelder-Mead from
+  the three best of them, and the range is that of the scan. The nine-dimensional box of the
+  variable diagonal is scanned at its corners and at 3000 random points, the minimum is refined by
+  bounded quasi-Newton descent (L-BFGS-B) from the two best of them, and the range runs from the
   largest value of the scan to that minimum.
 - **Curvature.** The objective range is the difference between the largest and the smallest value
   of a 13-point-per-axis scan of the box. With the smallest value replaced by zero, its exact value
@@ -115,13 +115,10 @@ The repository was reorganised for the public release in November 2026. `core/la
 experiments `table1_feasible_fraction`, `entry_register_d2` and `table2_representation_gap` and the
 three figure scripts carry over the numerics of the working scripts and notebooks of the project.
 `core/qhd.py` and the experiments built on it were rewritten for the release from the protocol
-stated in the paper. The representation gap and the two largest sweeps of the paper were first run
-on a GPU; the versions here run on a CPU, and the logs show that they reproduce the printed entries
-of Tables II, V and VI. The variable-diagonal family, the fourth row of Table II, does not come
-from a working script: it is implemented here from its description in the paper, with the search
-stated under the conventions above, and it reproduces the printed row and the ratios quoted with
-it. The reorganisation and the rewriting were done with the assistance of generative AI (Claude,
-Anthropic).
+stated in the paper. The first three rows of Table II and the two largest sweeps of the paper were
+first run on a GPU; the versions here run on a CPU, and the logs show that they reproduce the
+printed entries of Tables II, V and VI. The reorganisation and the rewriting were done with the
+assistance of generative AI (Claude, Anthropic).
 
 ## Licence and citation
 

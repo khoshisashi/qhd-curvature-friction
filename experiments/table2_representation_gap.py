@@ -5,7 +5,7 @@ factors as drawn, the same loadings after a QR orthogonalisation, five factors, 
 with a variable diagonal. The gap of a family on a target is the minimum of F over its design box
 minus the minimum over the positive semidefinite cone, in units of the family's own range of F.
 
-  python -m experiments.table2_representation_gap        thirty targets, about 35 minutes on one core
+  python -m experiments.table2_representation_gap        thirty targets, about 8 minutes on one core
   python -m experiments.table2_representation_gap 3      the first three targets only, without comparison
 
 The full run writes results/representation_gap.json, which the script of Fig. 3 reads.
@@ -26,7 +26,8 @@ D, N_SP = 6, 2
 N_TARGETS = 30
 N_SCAN = 4000          # random points of the scan, in addition to the corners of the box
 N_REFINE = 3           # local refinements, from the best points of the scan
-N_BOUNDED = 12         # the same for the nine-dimensional box of the variable diagonal
+N_SCAN_DIAG = 3000     # the same two numbers for the nine-dimensional box of the variable diagonal
+N_REFINE_DIAG = 2
 DIAG = (0.01, 0.04)    # range of the diagonal entries
 FAMILIES = {           # name: label of Table II
     "M3_drawn": "M=3, as drawn",
@@ -132,28 +133,26 @@ def min_over_box(F, sigma, lower, upper, seed):
     return best, max(span, 1e-300)
 
 
-def min_over_wide_box(F, sigma, lower, upper, seed):
-    """The same for the box of the variable diagonal, whose minimiser has coordinates on the
-    boundary and which the scan samples too thinly for Nelder-Mead to finish from three points:
-    bounded quasi-Newton descent from the N_BOUNDED best points, each polished by Nelder-Mead.
-    The range runs from the largest value of the scan to the refined minimum."""
+def min_over_diagonal_box(F, sigma, lower, upper, seed):
+    """The same for the box of the variable diagonal, in coordinates scaled to the unit cube: the
+    corners and N_SCAN_DIAG random points, then bounded quasi-Newton descent from the
+    N_REFINE_DIAG best of them. The range runs from the largest value of the scan to the refined
+    minimum."""
     rng = np.random.default_rng(seed)
+    n = len(lower)
     width = upper - lower
-    corners = np.array(list(itertools.product(*zip(lower, upper))))
-    points = np.concatenate([corners, lower + width * rng.uniform(0, 1, size=(N_SCAN, len(lower)))])
-    values = F(sigma(points))
+    corners = np.array(list(itertools.product([0.0, 1.0], repeat=n)))
+    points = np.concatenate([corners, rng.uniform(0, 1, size=(N_SCAN_DIAG, n))])
+    values = F(sigma(lower + width * points))
     order = np.argsort(values)
     best = float(values[order[0]])
 
     def scaled(u):
         return float(F(sigma((lower + width * np.clip(u, 0.0, 1.0))[None]))[0])
 
-    for i in order[:N_BOUNDED]:
-        opt = minimize(scaled, (points[i] - lower) / width, method="L-BFGS-B", bounds=[(0, 1)] * len(lower),
-                       options=dict(maxiter=2000, ftol=1e-15, gtol=1e-12))
-        polished = minimize(scaled, opt.x, method="Nelder-Mead",
-                            options=dict(xatol=1e-9, fatol=1e-18, maxiter=8000))
-        best = min(best, float(opt.fun), float(polished.fun))
+    for i in order[:N_REFINE_DIAG]:
+        opt = minimize(scaled, points[i], method="L-BFGS-B", bounds=[(0, 1)] * n, options=dict(maxiter=500))
+        best = min(best, float(opt.fun))
     return best, float(values.max()) - best
 
 
@@ -197,7 +196,7 @@ def measure(n_targets):
             "M3_target_diag": fixed_diagonal(V3, diag_target),
         }
         for name, box in boxes.items():
-            search = min_over_wide_box if name == "M3_vardiag" else min_over_box
+            search = min_over_diagonal_box if name == "M3_vardiag" else min_over_box
             best, width = search(F, *box, seed=100 + t)
             raw[name].append(best - cone[-1])
             span[name].append(width)
@@ -210,8 +209,8 @@ def measure(n_targets):
 def main():
     n_targets = int(sys.argv[1]) if len(sys.argv) > 1 else N_TARGETS
     header("Table II. Representation gap over thirty targets at d = 6")
-    print(f"d = {D}, N_x = {nx}, modes = {K.shape[1]}, scan of {N_SCAN} random points and the corners, "
-          f"{N_REFINE} refinements, {N_BOUNDED} for the variable diagonal")
+    print(f"d = {D}, N_x = {nx}, modes = {K.shape[1]}, scan of {N_SCAN} random points and the corners with "
+          f"{N_REFINE} refinements, {N_SCAN_DIAG} and {N_REFINE_DIAG} for the variable diagonal")
     raw, span, cone = measure(n_targets)
     gap = {name: raw[name] / span[name] for name in raw}
 
@@ -254,6 +253,7 @@ def main():
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps(dict(
         d=D, nx=nx, modes=int(K.shape[1]), n_targets=N_TARGETS, n_scan=N_SCAN, n_refine=N_REFINE,
+        n_scan_diagonal=N_SCAN_DIAG, n_refine_diagonal=N_REFINE_DIAG,
         families={name: dict(label=FAMILIES.get(name, "M=3, diagonal of the target"), gap=gap[name].tolist(),
                              raw_gap=raw[name].tolist(), range=span[name].tolist()) for name in raw},
         cone_residual=cone.tolist()), indent=1) + "\n")
