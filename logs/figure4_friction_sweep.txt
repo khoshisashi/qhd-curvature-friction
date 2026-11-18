@@ -1,0 +1,7 @@
+Fig. 4. Friction sweep at fixed objective-phase exposure
+run 2026-11-18 02:39 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+wrote figures/fig2_friction.pdf
+  seed 11, 10 frictions from 0.002 to 1: P(F<=0.01) largest at rho = 0.032
+  largest on the coarser grid, seeds 11, 12, 13, 14, 15: 0.0625, 0.0625, 0.0625, 0.0625, 0.25
+  on the plateau 0.032 <= rho <= 0.25, P(F<=0.01) varies by 0.0046

@@ -1,0 +1,85 @@
+Table II. Representation gap over thirty targets at d = 6
+run 2026-11-18 02:20 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+d = 6, N_x = 4, modes = 4096, scan of 4000 random points and the corners, 3 refinements, 12 for the variable diagonal
+target   M3_drawn    M3_orth   M5_drawn M3_vardiag       cone      s
+     1     0.7922     0.5428     0.1123     0.3658   5.20e-09   87.1
+     2     0.7410     0.3530     0.1726     0.3870   2.01e-09   44.0
+     3     0.4436     0.3708     0.2095     0.2252   5.08e-09   50.2
+     4     0.2395     0.2078     0.1331     0.1824   6.60e-09   54.4
+     5     0.3862     0.3230     0.1642     0.2047   6.23e-09  126.2
+     6     0.6665     0.4522     0.3247     0.3702   1.65e-09   79.8
+     7     0.5361     0.2390     0.2257     0.3031   5.98e-09   57.1
+     8     0.3758     0.2928     0.4179     0.2011   1.02e-09   72.8
+     9     0.3759     0.3350     0.2889     0.2159   4.91e-09   27.8
+    10     0.3661     0.2835     0.1134     0.2175   1.17e-09  159.5
+    11     0.4966     0.3773     0.2762     0.2947   1.64e-09   47.0
+    12     0.7456     0.7108     0.0872     0.4593   2.07e-09   97.3
+    13     0.4493     0.3774     0.1709     0.1986   7.25e-09   41.2
+    14     0.1964     0.1747     0.1014     0.0893   1.36e-09   81.7
+    15     0.2708     0.2526     0.2654     0.1693   2.43e-09   69.7
+    16     0.4690     0.5826     0.1588     0.1965   5.02e-09   93.4
+    17     0.3097     0.3041     0.2852     0.1860   3.37e-09   85.1
+    18     0.5966     0.5410     0.1114     0.3384   4.73e-09   19.7
+    19     0.5130     0.2867     0.1394     0.2506   2.14e-09  126.7
+    20     0.4254     0.3508     0.4897     0.2220   1.40e-09   58.5
+    21     0.5575     0.2813     0.3148     0.2760   2.62e-09   76.8
+    22     1.0952     0.6314     0.5522     0.4987   3.57e-09   12.5
+    23     0.2552     0.4796     0.3605     0.1523   4.76e-09   48.7
+    24     0.8588     0.7438     0.4411     0.4051   2.02e-09    6.8
+    25     0.4062     0.3893     0.2127     0.2340   5.18e-09  105.7
+    26     0.5115     0.4185     0.2306     0.2262   2.12e-09   90.3
+    27     0.3924     0.3457     0.3997     0.2146   1.76e-09   48.7
+    28     0.4553     0.1629     0.1644     0.1962   1.37e-09  115.2
+    29     0.4316     0.2990     0.3986     0.2604   3.62e-09  129.8
+    30     0.4614     0.3781     0.4302     0.2132   1.12e-09  100.9
+
+Table II                   min     25%  median     75%     max
+M=3, as drawn            0.196   0.378   0.452   0.552   1.095
+M=3, orthogonal          0.163   0.288   0.352   0.444   0.744
+M=5, as drawn            0.087   0.160   0.228   0.352   0.552
+M=3, variable diag.      0.089   0.199   0.224   0.301   0.499
+cone minimum, zero by construction: between 1.0e-09 and 7.3e-09
+
+paired with M=3 as drawn, on the same targets
+                       gap lower  median change  raw lower  median raw ratio  median range ratio
+M=3, orthogonal            28 of 30         -0.079      28 of 30             0.870               1.060
+M=5, as drawn              26 of 30         -0.238      25 of 30             0.656               1.209
+M=3, variable diag.        30 of 30         -0.226      30 of 30             0.811               1.486
+M=3, target's diagonal     16 of 30         -0.002      18 of 30             0.972               0.968
+normalised and raw measure disagree on 1 of the 60 comparisons with the orthogonal and the five-factor family
+targets on which the gap of M=3 as drawn exceeds one: 1
+design qubits at m = 5: variable-diagonal M=3 45, fixed-diagonal M=5 25, covariance entries 105
+
+wrote results/representation_gap.json
+
+comparison with the values printed in the paper
+  Table II M=3, as drawn min                                  computed 0.19635  printed 0.196  same
+  Table II M=3, as drawn median                               computed 0.45230  printed 0.452  same
+  Table II M=3, as drawn max                                  computed 1.09520  printed 1.095  same
+  Table II M=3, orthogonal min                                computed 0.16288  printed 0.163  same
+  Table II M=3, orthogonal median                             computed 0.35186  printed 0.352  same
+  Table II M=3, orthogonal max                                computed 0.74384  printed 0.744  same
+  Table II M=5, as drawn min                                  computed 0.08724  printed 0.087  same
+  Table II M=5, as drawn median                               computed 0.22819  printed 0.228  same
+  Table II M=5, as drawn max                                  computed 0.55216  printed 0.552  same
+  Table II M=3, variable diag. min                            computed 0.08933  printed 0.089  same
+  Table II M=3, variable diag. median                         computed 0.22357  printed 0.224  same
+  Table II M=3, variable diag. max                            computed 0.49871  printed 0.499  same
+  Sec. V-B: five factors lower the gap in (of 30)             computed 26.00  printed 26  same
+  Sec. V-B: orthogonal directions lower the gap in            computed 28.00  printed 28  same
+  Sec. V-B: median lowering by five factors                   computed 0.23840  printed 0.238  same
+  Sec. V-B: median lowering by orthogonal directions          computed 0.07863  printed 0.079  same
+  Sec. V-B: raw residual lower with five factors in           computed 25.00  printed 25  same
+  Sec. V-B: raw residual lower with orthogonal directions in  computed 28.00  printed 28  same
+  Sec. V-B: raw residual lower with a variable diagonal in    computed 30.00  printed 30  same
+  Sec. V-B: median raw ratio, variable diagonal               computed 0.81133  printed 0.811  same
+  Sec. V-B: median raw ratio, five factors                    computed 0.65613  printed 0.656  same
+  Sec. V-C: median raw ratio, orthogonal directions           computed 0.87048  printed 0.870  same
+  Sec. V-B: range ratio, orthogonal                           computed 1.0598  printed 1.06  same
+  Sec. V-B: range ratio, five factors                         computed 1.2095  printed 1.21  same
+  Sec. V-B: comparisons on which the two measures disagree    computed 1.00  printed 1  same
+  Sec. V-B: targets with a gap above one                      computed 1.00  printed 1  same
+  Sec. V-B: cone minimum, smallest, in 1e-9                   computed 1.023  printed 1.0  same
+  Sec. V-B: cone minimum, largest, in 1e-9                    computed 7.251  printed 7.3  same
+  28 of 28 round to the printed value, 0 differ by one in the last digit, 0 differ by more

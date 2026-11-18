@@ -1,5 +1,5 @@
 Table VI. Friction sweep at fixed exposure, seed-11 landscape
-run 2026-11-17 04:40 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+run 2026-11-18 01:41 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
 
 mu = 0.1560, 2 sqrt(mu) = 0.7899, exposure E = 4.2367e+05 with alpha_obj = 2.51
     rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV

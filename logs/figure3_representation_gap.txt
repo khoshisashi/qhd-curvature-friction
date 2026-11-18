@@ -1,0 +1,6 @@
+Fig. 3. Raw residual on the thirty targets
+run 2026-11-18 02:58 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+
+wrote figures/fig4_gap.pdf
+  as drawn above orthogonal in 28 of 30, above variable diagonal in 30, above five factors in 25
+  largest raw residual 0.0617, smallest 0.0075

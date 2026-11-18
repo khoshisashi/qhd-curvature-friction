@@ -1,13 +1,16 @@
 """Table VI and the statements of Sec. V-E: friction sweep at fixed objective-phase exposure.
 
   python -m experiments.table6_friction_sweep            Table VI, seed-11 landscape
-  python -m experiments.table6_friction_sweep dense      two further frictions on the seed-11 landscape
+  python -m experiments.table6_friction_sweep dense      four further frictions on the seed-11 landscape
   python -m experiments.table6_friction_sweep draws      four further draws (seeds 12 to 15), coarser grid
   python -m experiments.table6_friction_sweep steps      sensitivity to the integration step, all five draws
   python -m experiments.table6_friction_sweep periodic   the periodic spectral Laplacian
 
-All runs use m = 5 bits per variable. rho is the friction in units of critical damping.
+All runs use m = 5 bits per variable. rho is the friction in units of critical damping. The first
+three sections also store their rows under results/, where the script of Fig. 4 reads them.
 """
+import json
+import pathlib
 import sys
 
 import numpy as np
@@ -22,6 +25,8 @@ PRINTED = {  # rho: P(F <= 0.01), P(F <= 0.05), E[F]
     4: (0.151, 0.747, 0.0387),
 }
 COARSE = (0.004, 0.016, 0.0625, 0.25, 1)
+DENSE = (0.002, 0.008, 0.0625, 0.5)
+RESULTS = pathlib.Path(__file__).resolve().parents[1] / "results"
 REFINED = 0.02 / 3     # integration step of the refinement check
 COLUMNS = (f"{'rho':>7} {'S':>8} {'lambda(S)':>10} {'steps':>7} {'ds':>7} {'P(F<=0.01)':>11} "
            f"{'P(F<=0.05)':>11} {'E[F]':>8} {'TV':>6}")
@@ -47,6 +52,11 @@ def line(r):
             f"{r['p01']:>11.4f} {r['p05']:>11.4f} {r['mean']:>8.5f} {r['tv']:>6.3f}")
 
 
+def store(section, content):
+    RESULTS.mkdir(exist_ok=True)
+    (RESULTS / f"friction_sweep_{section}.json").write_text(json.dumps(content, indent=1) + "\n")
+
+
 def table():
     header("Table VI. Friction sweep at fixed exposure, seed-11 landscape")
     mu, f_tilde, grid = landscape(11)
@@ -55,11 +65,14 @@ def table():
           f"exposure E = {6 * ALPHA_OBJ * (lam_end - 1) / nu:.4e} with alpha_obj = {ALPHA_OBJ}")
     print(COLUMNS)
     pub = Published()
+    rows = []
     for rho in PRINTED:
         r = run(mu, f_tilde, grid, rho)
+        rows.append(r)
         print(line(r), flush=True)
         for key, printed, dec in zip(("p01", "p05", "mean"), PRINTED[rho], (3, 3, 4)):
             pub.add(f"rho = {rho:g} {key}", r[key], printed, dec)
+    store("table", dict(seed=11, mu=mu, rows=rows))
     return pub.report()
 
 
@@ -67,18 +80,23 @@ def dense():
     header("Sec. V-E. Further frictions on the seed-11 landscape")
     mu, f_tilde, grid = landscape(11)
     print(COLUMNS)
-    for rho in (0.002, 0.0625):
-        print(line(run(mu, f_tilde, grid, rho)), flush=True)
+    rows = []
+    for rho in DENSE:
+        rows.append(run(mu, f_tilde, grid, rho))
+        print(line(rows[-1]), flush=True)
+    store("dense", dict(seed=11, mu=mu, rows=rows))
     return 0
 
 
 def draws():
     header("Sec. V-E. Four further draws on the coarser grid")
+    stored = {}
     for seed in (12, 13, 14, 15):
         mu, f_tilde, grid = landscape(seed)
         print(f"seed {seed}: mu = {mu:.4f}")
         print(COLUMNS)
         rows = [run(mu, f_tilde, grid, rho) for rho in COARSE]
+        stored[seed] = dict(mu=mu, rows=rows)
         for r in rows:
             print(line(r), flush=True)
         best_p = max(rows, key=lambda r: r["p01"])
@@ -88,6 +106,7 @@ def draws():
               f"against rho = 1: {100 * (best_p['p01'] - crit['p01']):+.1f} points, "
               f"E[F] smaller by a factor of {crit['mean'] / best_e['mean']:.2f}")
         print()
+    store("draws", dict(draws=stored))
     return 0
 
 

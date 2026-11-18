@@ -1,5 +1,5 @@
 Sec. V-E. Four further draws on the coarser grid
-run 2026-11-17 03:00 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
+run 2026-11-18 01:58 UTC | Python 3.13.18 | numpy 2.5.5 | scipy 1.18.1 | Linux x86_64
 
 seed 12: mu = 0.0467
     rho        S  lambda(S)   steps      ds  P(F<=0.01)  P(F<=0.05)     E[F]     TV
